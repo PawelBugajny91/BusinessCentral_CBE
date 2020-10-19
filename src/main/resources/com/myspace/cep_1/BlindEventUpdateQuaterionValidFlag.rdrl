@@ -1,0 +1,20 @@
+package com.myspace.cep_1;
+
+import java.lang.Number;
+
+rule "BlindEventUpdateQuaterionValidFlag"
+	dialect "mvel"
+	activation-group "quaterion"
+	salience 5
+	no-loop true
+	when
+		blind : BlindingEvent( ) over window:time (2m)
+		asa : ASA1311Z( this after [0s, 2m] blind , value == 1 ) over window:time (2m)
+	then
+		BlindingEvent fact0 = new BlindingEvent();
+		fact0.setTime( blind.time );
+		fact0.setStatus( blind.status );
+		fact0.setDuration( asa.time-blind.time );
+		insert( fact0 );
+		retract( blind );
+end

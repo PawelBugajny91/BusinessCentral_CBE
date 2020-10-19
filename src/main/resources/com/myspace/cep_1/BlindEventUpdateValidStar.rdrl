@@ -1,0 +1,17 @@
+package com.myspace.cep_1;
+
+import java.lang.Number;
+
+rule "BlindEventUpdateValidStar"
+	dialect "mvel"
+	activation-group "valid"
+	salience 5
+	no-loop true
+	when
+		blind : BlindingEvent( ) over window:time (3m)
+		asa : ASA1321L( this after [0s, 3m] blind , value < 2 ) over window:time (3m)
+	then
+		modify( blind ) {
+				setDuration( asa.time-blind.time )
+		}
+end

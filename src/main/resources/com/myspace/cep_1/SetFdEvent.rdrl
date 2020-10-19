@@ -1,0 +1,15 @@
+package com.myspace.cep_1;
+
+import java.lang.Number;
+
+rule "SetFdEvent"
+	dialect "mvel"
+	when
+		SCII : sci( duration > 0 )
+	then
+		FDEvent fact0 = new FDEvent();
+		fact0.setDuration( SCII.duration );
+		fact0.setTime( SCII.time );
+		fact0.setStatus( "1" );
+		insert( fact0 );
+end
