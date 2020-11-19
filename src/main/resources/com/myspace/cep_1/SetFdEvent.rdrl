@@ -8,7 +8,7 @@ rule "SetFdEvent"
 		SCII : sci( duration > 0 )
 	then
 		FDEvent fact0 = new FDEvent();
-		fact0.setDuration( SCII.duration );
+		fact0.setDuration( SCII.duration*1000 );
 		fact0.setTime( SCII.time );
 		fact0.setStatus( "1" );
 		insert( fact0 );
