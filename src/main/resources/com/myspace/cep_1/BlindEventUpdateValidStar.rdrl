@@ -11,7 +11,10 @@ rule "BlindEventUpdateValidStar"
 		blind : BlindingEvent( ) over window:time (3m)
 		asa : ASA1321L( this after [0s, 3m] blind , value < 2 ) over window:time (3m)
 	then
-		modify( blind ) {
-				setDuration( asa.time-blind.time )
-		}
+		BlindingEvent fact0 = new BlindingEvent();
+		fact0.setDuration( asa.time-blind.time );
+		fact0.setTime( blind.time );
+		fact0.setStatus( blind.status );
+		insert( fact0 );
+		retract( blind );
 end
